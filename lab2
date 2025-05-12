@@ -1,0 +1,17 @@
+import pandas as pd, seaborn as sns, matplotlib.pyplot as plt
+from sklearn.datasets import fetch_california_housing
+
+# Load dataset
+df = fetch_california_housing(as_frame=True).frame
+
+# Correlation matrix
+corr = df.corr()
+print(corr)
+
+# Heatmap
+sns.heatmap(corr, annot=True, cmap='coolwarm')
+plt.show()
+
+# Pair plot (can be slow due to size)
+sns.pairplot(df.sample(300))  # sample to speed up
+plt.show()
