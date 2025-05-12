@@ -1,0 +1,25 @@
+import numpy as np
+from collections import Counter
+
+# Generate 100 random values in [0,1]
+x = np.random.rand(100)
+
+# Label first 50 points
+train_x = x[:50]
+train_y = ['Class1' if i <= 0.5 else 'Class2' for i in train_x]
+
+# Points to classify
+test_x = x[50:]
+
+# KNN function
+def knn_predict(train_x, train_y, test_point, k):
+    distances = [abs(t - test_point) for t in train_x]
+    k_indices = np.argsort(distances)[:k]
+    k_labels = [train_y[i] for i in k_indices]
+    return Counter(k_labels).most_common(1)[0][0]
+
+# Try different k values
+k_values = [1, 2, 3, 4, 5, 20, 30]
+for k in k_values:
+    predictions = [knn_predict(train_x, train_y, point, k) for point in test_x]
+    print(f"\nk = {k}\nPredicted classes: {predictions}")
