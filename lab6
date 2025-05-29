@@ -1,24 +1,25 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Generate synthetic dataset
+# Generate data
 x = np.linspace(1, 10, 100)
-y = np.sin(x) + np.random.normal(0, 0.1, x.shape)
+y = np.sin(x) + np.random.normal(0, 0.1, 100)
 
 # LWR function
-def lwr(x0, X, Y, tau=0.5):
-    X_ = np.vstack([np.ones_like(X), X]).T
+def lwr(x0, x, y, tau=0.5):
+    w = np.exp(-((x - x0) ** 2) / (2 * tau ** 2))
+    X_ = np.c_[np.ones_like(x), x]
     x0_ = np.array([1, x0])
-    W = np.diag(np.exp(-((X - x0)**2) / (2 * tau**2)))
-    theta = np.linalg.pinv(X_.T @ W @ X_) @ X_.T @ W @ Y
+    W = np.diag(w)
+    theta = np.linalg.pinv(X_.T @ W @ X_) @ X_.T @ W @ y
     return x0_ @ theta
 
-# Predict for all x
-y_pred = np.array([lwr(x0, x, y) for x0 in x])
+# Predict using LWR
+y_pred = [lwr(xi, x, y) for xi in x]
 
 # Plot
-plt.scatter(x, y, label="Data", color="lightblue")
-plt.plot(x, y_pred, label="LWR Fit", color="red")
+plt.scatter(x, y, color='lightblue', label='Data')
+plt.plot(x, y_pred, color='red', label='LWR Fit')
 plt.legend()
 plt.title("Locally Weighted Regression")
 plt.show()
