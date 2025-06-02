@@ -24,6 +24,6 @@ def find_s_algorithm(file_path):
 
     return hypothesis
 
-file_path = r'C:\Users\User\OneDrive\Desktop\ML LAB\training_dataset.csv'
+file_path = r'training_dataset.csv'
 hypothesis = find_s_algorithm(file_path)
 print("\nThe final hypothesis is:", hypothesis)
